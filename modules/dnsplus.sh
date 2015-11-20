@@ -1,3 +1,5 @@
+#!/bin/bash
+# DNS zone checker with added domain tools.
 dnsplus () 
 { 
     local DOMAIN=$1;
