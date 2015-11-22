@@ -1,9 +1,9 @@
 #!/bin/bash
 # DNS zone checker with added domain tools.
 DOMAIN=$1;
-IP=$(dig $DOMAIN | grep $DOMAIN | sed '/^;/ d' | awk '{print $5}');
+IP=$(dig +short $DOMAIN);
 echo "DNS Records:";
-echo "@ (Root A Record):\n$(dig +short $DOMAIN | sed 's/^/ /')";
+echo "@ (Root A Record):\n$(echo $IP | sed 's/^/ /')";
 echo "MX:\n$(dig +short mx $DOMAIN | sed 's/^/ /')";
 echo "NS:\n$(dig +short ns $DOMAIN | sed 's/^/ /')";
 echo "rDNS:\n$(dig +short -x $IP | sed 's/^/ /')";
