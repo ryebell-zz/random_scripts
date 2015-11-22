@@ -3,10 +3,10 @@
 DOMAIN=$1;
 IP=$(dig $DOMAIN | grep $DOMAIN | sed '/^;/ d' | awk '{print $5}');
 echo "DNS Records:";
-dig $DOMAIN | grep  $DOMAIN | sed '/^;/ d' | awk '{print $4,$5}';
-dig mx $DOMAIN | grep  $DOMAIN | sed '/^;/ d' | awk '{print $4,$6}';
-dig ns $DOMAIN | grep  $DOMAIN | sed '/^;/ d' | awk '{print $4,$5}';
-dig -x $IP | grep  $DOMAIN | sed '/^;/ d' | awk '{print $4,$5}';
+echo "@ (Root A Record):\n$(dig +short $DOMAIN | sed 's/^/ /')";
+echo "MX:\n$(dig +short mx $DOMAIN | sed 's/^/ /')";
+echo "NS:\n$(dig +short ns $DOMAIN | sed 's/^/ /')";
+echo "rDNS:\n$(dig +short -x $IP | sed 's/^/ /')";
 case $DOMAIN in 
     *.com | *.net)
         whois $DOMAIN | grep  -ie "expiration date:" -ie "registrar:" | tail -2
