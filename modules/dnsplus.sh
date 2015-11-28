@@ -1,39 +1,39 @@
 #!/bin/bash
 # DNS zone checker with added domain tools.
-DOMAIN=$1;
-IP=$(dig +short $DOMAIN);
+domain=$1;
+ip=$(dig +short $domain);
 echo "DNS Records:";
-echo "@ (Root A Record):\n$(echo $IP | sed 's/^/ /')";
-echo "MX:\n$(dig +short mx $DOMAIN | sed 's/^/ /')";
-echo "NS:\n$(dig +short ns $DOMAIN | sed 's/^/ /')";
-echo "rDNS:\n$(dig +short -x $IP | sed 's/^/ /')";
-echo "Domain Information:"
-case $DOMAIN in 
+printf "@ (Root A Record):\n$(echo $ip | sed 's/^/ /')\n";
+printf "MX:\n$(dig +short mx $domain | sed 's/^/ /')\n";
+printf "NS:\n$(dig +short ns $domain | sed 's/^/ /')\n";
+printf "rDNS:\n$(dig +short -x $ip | sed 's/^/ /')\n";
+printf "Domain Information:\n"
+case $domain in 
     *.com | *.net)
-        whois $DOMAIN | grep  -ie "expiration date:" -ie "registrar:" -ie "domain status:" | tail -n6
+        whois $domain | grep  -ie "expiration date:" -ie "registrar:" -ie "domain status:" | tail -n6
         ;;
     *.co.uk)
-        whois $DOMAIN | sed "s/^[ \t]*//" | grep  -ie "expiry date:" -ie "registration status" -ie "registrar:" -A1 | sed 'N;s/\n/ /' | awk '{gsub("-- ", "");print}' | sed '/Last updated:/d' 
+        whois $domain | sed "s/^[ \t]*//" | grep  -ie "expiry date:" -ie "registration status" -ie "registrar:" -A1 | sed 'N;s/\n/ /' | awk '{gsub("-- ", "");print}' | sed '/Last updated:/d' 
         ;;
     *.org)
-        whois $DOMAIN | grep  -ie "registry expiry date:" -ie "sponsoring registrar:" -ie "domain status:" 
+        whois $domain | grep  -ie "registry expiry date:" -ie "sponsoring registrar:" -ie "domain status:" 
         ;;
     *.edu)
-        whois $DOMAIN | grep  -i "domain expires:" | sed 's/ \{2,\}/ /g' && echo "Registrar: EDUCAUSE"
+        whois $domain | grep  -i "domain expires:" | sed 's/ \{2,\}/ /g' && echo "Registrar: EDUCAUSE"
         ;;
     *.ac)
-        whois $DOMAIN | grep  -i "expiry" | tail
+        whois $domain | grep  -i "expiry" | tail
         ;;
     *.ad)
-        whois $DOMAIN
+        whois $domain
         ;;
     *.ae)
-        whois $DOMAIN | grep  -i "registrar:" | tail
+        whois $domain | grep  -i "registrar:" | tail
         ;;
     *.af)
-        whois $DOMAIN | grep  -ie "registry expiry date:" -ie "sponsoring registrar:" | sed 's/T.*//'
+        whois $domain | grep  -ie "registry expiry date:" -ie "sponsoring registrar:" | sed 's/T.*//'
         ;;
     *)
-        echo "$DOMAIN is a non-compatible TLD for dnsplus v1.0"
+        echo "$domain is a non-compatible TLD for dnsplus v1.0"
         ;;
 esac
