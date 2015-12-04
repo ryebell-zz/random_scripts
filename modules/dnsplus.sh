@@ -33,6 +33,10 @@ case $domain in
     *.af)
         whois $domain | grep  -ie "registry expiry date:" -ie "sponsoring registrar:" | sed 's/T.*//'
         ;;
+    *.com.au)
+        printf "Expiration Date: Unknown\n";
+        whois $domain | grep -ie "Registrar Name" | awk '{print $1, $2, $3}'
+        ;;
     *)
         echo "$domain is a non-compatible TLD for dnsplus v1.0"
         ;;
