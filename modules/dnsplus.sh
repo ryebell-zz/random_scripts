@@ -2,7 +2,7 @@
 # DNS zone checker with added domain tools.
 domain=$1;
 ip=$(dig +short $domain);
-echo "DNS Records:";
+echo "DNS Records: (${domain})";
 printf "@ (Root A Record):\n$(echo $ip | sed 's/^/ /')\n";
 printf "MX:\n$(dig +short mx $domain | sed 's/^/ /')\n";
 printf "NS:\n$(dig +short ns $domain | sed 's/^/ /')\n";
