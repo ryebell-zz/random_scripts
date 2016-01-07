@@ -3,7 +3,7 @@
 domain=$1;
 ip=$(dig +short $domain);
 echo "DNS Records: (${domain})";
-printf "@ (Root A Record):\n$(echo $ip | sed 's/^/ /')";
+printf "@ (Root A Record):\n$(echo $ip | sed 's/^/ /') ";
 printf "($(whois $ip | grep OrgName | cut -d' ' -f2- |  sed -e 's/^[ \t]*//'))\n";
 printf "MX:\n$(dig +short mx $domain | sed 's/^/ /')\n";
 printf "NS:\n$(dig +short ns $domain | sed 's/^/ /')\n";
